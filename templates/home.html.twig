@@ -1,0 +1,57 @@
+{% extends "base.html.twig" %}
+
+{% block page %}
+
+    <div class="container"><br><br>
+        <h1>SHARE<br>YOUR GIF</h1>
+        <p>
+            <form method="GET" action='Home.php'>
+                <input type="text" class="text" name="text" placeholder="insert a string">
+                <input type="submit" class="invio" name="invio" value="Search on GIPHY">
+            </form>
+        </p>
+    </div>
+
+    {% block js %}
+        <script>
+            function Copy(copyText) {
+                navigator.clipboard.writeText(copyText).then(() => {
+                    alert("Link Copied!");
+                });
+            }
+        </script>
+    {% endblock js %}
+
+        <div class="container">
+            <br>
+
+            {% for d in data %}
+                <div style="background-image:url('{{d.images.original.url}}');" class='gifComponent'>
+                    <div class="testi">
+                        <h5 class="autore">
+                            {{ d.title }}
+                        </h5>    
+                        
+                        <h6 class="username">
+                            uploaded by {% if d.username %} {{ d.username }} {% else %} unknown {% endif %}
+                        </h6>
+
+                        <h7 class="data">
+                            on {{ d.import_datetime }}
+                        </h7>
+                    </div>
+                    <div class='functiones'>
+                            <a><img src="./static/icon/icon1.png" class="icon" onclick="Copy('{{d.images.original.url}}', '{{d.username}}')"></a>
+                            <a><img src="./static/icon/icon2.png" class="icon" onclick="Copy('{{d.images.original.url}}')"></a>
+                    </div> 
+                </div>
+
+            {% endfor %}
+        </div>
+        <div id="modal01" class="modal" onclick="this.style.display='none'">
+            <span class="close">&times;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <div class="modal-content">
+                <img id="img01" style="max-width:100%">
+            </div>
+        </div>
+{% endblock page %}
